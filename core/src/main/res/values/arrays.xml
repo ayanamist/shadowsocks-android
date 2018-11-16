@@ -19,7 +19,7 @@
         <item>AES-192-GCM</item>
         <item>AES-256-GCM</item>
         <item>CHACHA20-IETF-POLY1305</item>
-        <item>XCHACHA20-IETF-POLY1305</item>
+        <item>HTTP/2 over TLS</item>
     </string-array>
 
     <string-array name="enc_method_value" translatable="false">

@@ -118,6 +118,7 @@ class VpnService : BaseVpnService(), LocalDnsService.Interface {
 
     private var conn: ParcelFileDescriptor? = null
     private var worker: ProtectWorker? = null
+    @Volatile
     private var underlyingNetwork: Network? = null
         @TargetApi(28)
         set(value) {
@@ -171,11 +172,11 @@ class VpnService : BaseVpnService(), LocalDnsService.Interface {
     }
 
     override fun startNativeProcesses() {
+        super.startNativeProcesses()
+
         val worker = ProtectWorker()
         worker.start()
         this.worker = worker
-
-        super.startNativeProcesses()
 
         sendFd(startVpn())
     }

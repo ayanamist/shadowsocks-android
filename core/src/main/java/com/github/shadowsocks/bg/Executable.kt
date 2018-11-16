@@ -35,9 +35,8 @@ object Executable {
     const val SS_LOCAL = "libss-local.so"
     const val SS_TUNNEL = "libss-tunnel.so"
     const val TUN2SOCKS = "libtun2socks.so"
-    const val OVERTURE = "liboverture.so"
 
-    private val EXECUTABLES = setOf(SS_LOCAL, SS_TUNNEL, REDSOCKS, TUN2SOCKS, OVERTURE)
+    private val EXECUTABLES = setOf(SS_LOCAL, SS_TUNNEL, REDSOCKS, TUN2SOCKS)
 
     fun killAll() {
         for (process in File("/proc").listFiles { _, name -> TextUtils.isDigitsOnly(name) }) {

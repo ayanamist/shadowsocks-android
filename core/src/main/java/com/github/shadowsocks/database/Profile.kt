@@ -25,6 +25,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.room.*
+import com.github.shadowsocks.acl.Acl
 import com.github.shadowsocks.plugin.PluginConfiguration
 import com.github.shadowsocks.plugin.PluginOptions
 import com.github.shadowsocks.preference.DataStore
@@ -184,12 +185,12 @@ class Profile : Serializable {
     var remotePort: Int = 8388
     var password: String = "u1rRWTssNv0p"
     var method: String = "aes-256-cfb"
-    var route: String = "all"
-    var remoteDns: String = "8.8.8.8"
+    var route: String = Acl.BYPASS_LAN_CHN
+    var remoteDns: String = "114.114.114.114,119.29.29.29"
     var proxyApps: Boolean = false
     var bypass: Boolean = false
     var udpdns: Boolean = false
-    var ipv6: Boolean = true
+    var ipv6: Boolean = false
     var individual: String = ""
     var tx: Long = 0
     var rx: Long = 0

@@ -85,9 +85,7 @@ object LocalDnsService {
                 })
             }
 
-            if (!profile.udpdns) data.processes.start(buildAdditionalArguments(arrayListOf(
-                    File(app.applicationInfo.nativeLibraryDir, Executable.OVERTURE).absolutePath,
-                    "-c", buildOvertureConfig("overture.conf"))))
+            buildOvertureConfig("overture.conf")
         }
     }
 }

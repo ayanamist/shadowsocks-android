@@ -50,8 +50,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.io.IOException
-import java.net.InetAddress
-import java.net.UnknownHostException
 import java.security.MessageDigest
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -389,27 +387,12 @@ object BaseService {
                     // Clean up
                     killProcesses()
 
-                    // it's hard to resolve DNS on a specific interface so we'll do it here
-                    if (!profile.host.isNumericAddress()) {
-                        thread("BaseService-resolve") {
-                            // A WAR fix for Huawei devices that UnknownHostException cannot be caught correctly
-                            try {
-                                profile.host = InetAddress.getByName(profile.host).hostAddress ?: ""
-                            } catch (_: UnknownHostException) {
-                                profile.host = "";
-                            }
-                        }.join(10 * 1000)
-                        if (!profile.host.isNumericAddress()) throw UnknownHostException()
-                    }
-
                     startNativeProcesses()
 
                     if (profile.route !in arrayOf(Acl.ALL, Acl.CUSTOM_RULES)) AclSyncer.schedule(profile.route)
                     RemoteConfig.fetch()
 
                     data.changeState(CONNECTED)
-                } catch (_: UnknownHostException) {
-                    stopRunner(true, getString(R.string.invalid_server))
                 } catch (exc: Throwable) {
                     if (exc !is PluginManager.PluginNotFoundException && exc !is VpnService.NullConnectionException) {
                         printLog(exc)
