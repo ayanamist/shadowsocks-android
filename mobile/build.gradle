@@ -42,13 +42,11 @@ android {
     lintOptions.checkReleaseBuilds false
     splits {
         abi {
-            enable true
-            universalApk true
+            enable false
+            universalApk false
         }
     }
-    sourceSets.main.jniLibs.srcDirs +=
-            new File(project(':core').buildDir, "intermediates/bundles/${getCurrentFlavor()}/jni")
-    sourceSets.main.jniLibs.srcDirs += new File(project(':core').projectDir, "src/overture/bin")
+    sourceSets.main.jniLibs.srcDirs += new File(projectDir, 'imported-lib')
 }
 
 dependencies {
