@@ -21,7 +21,7 @@ def getCurrentFlavor() {
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "com.github.shadowsocks"
+        applicationId "com.github.myss"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode rootProject.versionCode
