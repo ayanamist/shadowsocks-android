@@ -82,28 +82,6 @@ class ProxyInstance(val profile: Profile, private val route: String = profile.ro
             profile.password = proxy[2].trim()
             profile.method = proxy[3].trim()
         }
-
-        // it's hard to resolve DNS on a specific interface so we'll do it here
-        if (profile.host.parseNumericAddress() == null) {
-            profile.host = hosts.resolve(profile.host).run {
-                if (isEmpty()) try {
-                    service.resolver(profile.host).firstOrNull()
-                } catch (_: IOException) {
-                    null
-                } else {
-                    val network = service.getActiveNetwork() ?: throw UnknownHostException()
-                    val hasIpv4 = DnsResolverCompat.haveIpv4(network)
-                    val hasIpv6 = DnsResolverCompat.haveIpv6(network)
-                    firstOrNull {
-                        when (it) {
-                            is Inet4Address -> hasIpv4
-                            is Inet6Address -> hasIpv6
-                            else -> error(it)
-                        }
-                    }
-                }
-            }?.hostAddress ?: throw UnknownHostException()
-        }
     }
 
     /**
@@ -123,6 +101,8 @@ class ProxyInstance(val profile: Profile, private val route: String = profile.ro
                 "-b", DataStore.listenAddress,
                 "-l", DataStore.portProxy.toString(),
                 "-t", "600",
+                "-E", Core.deviceStorage.getExternalFilesDir(null)!!.absolutePath,
+                "-P", DataStore.portLocalDns.toString(),
                 "-S", stat.absolutePath,
                 "-c", configFile.absolutePath))
         if (extraFlag != null) cmd.add(extraFlag)

@@ -13,8 +13,6 @@
             <item android:id="@+id/action_import_clipboard"
                   android:title="@string/action_import"
                   android:alphabeticShortcut="v"/>
-            <item android:id="@+id/action_import_gfwlist"
-                  android:title="@string/route_entry_gfwlist"/>
         </menu>
     </item>
 </menu>

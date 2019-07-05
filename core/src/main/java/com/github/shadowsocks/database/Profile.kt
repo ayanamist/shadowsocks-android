@@ -28,6 +28,7 @@ import android.util.Log
 import android.util.LongSparseArray
 import androidx.core.net.toUri
 import androidx.room.*
+import com.github.shadowsocks.acl.Acl
 import com.github.shadowsocks.plugin.PluginConfiguration
 import com.github.shadowsocks.plugin.PluginOptions
 import com.github.shadowsocks.preference.DataStore
@@ -58,9 +59,8 @@ data class Profile(
         var remotePort: Int = 8388,
         var password: String = "u1rRWTssNv0p",
         var method: String = "aes-256-cfb",
-
-        var route: String = "all",
-        var remoteDns: String = "dns.google",
+        var route: String = Acl.BYPASS_LAN_CHN,
+        var remoteDns: String = "114.114.114.114,119.29.29.29",
         var proxyApps: Boolean = false,
         var bypass: Boolean = false,
         var udpdns: Boolean = false,
@@ -314,6 +314,7 @@ data class Profile(
         put("server_port", remotePort)
         put("password", password)
         put("method", method)
+        put("remote_dns", remoteDns)
         if (profiles == null) return@apply
         PluginConfiguration(plugin ?: "").selectedOptions.also {
             if (it.id.isNotEmpty()) {
@@ -323,7 +324,6 @@ data class Profile(
         }
         put("remarks", name)
         put("route", route)
-        put("remote_dns", remoteDns)
         put("ipv6", ipv6)
         put("metered", metered)
         put("proxy_apps", JSONObject().apply {

@@ -58,8 +58,14 @@ class Acl {
         var customRules: Acl
             get() {
                 val acl = Acl()
-                val str = DataStore.publicStore.getString(CUSTOM_RULES)
-                if (str != null) acl.fromReader(str.reader(), true)
+                var str = DataStore.publicStore.getString(CUSTOM_RULES)
+                if (str == null) {
+                    str = listOf(
+                            """(?:^|\.)ampproject\.org$""",
+                            """(?:^|\.)googleapis\.cn$"""
+                    ).joinToString("\n")
+                }
+                acl.fromReader(str.reader(), true)
                 if (!acl.bypass) {
                     acl.bypass = true
                     acl.subnets.clear()
@@ -68,7 +74,7 @@ class Acl {
             }
             set(value) = DataStore.publicStore.putString(CUSTOM_RULES,
                     if ((!value.bypass || value.subnets.size() == 0) && value.bypassHostnames.size() == 0 &&
-                            value.proxyHostnames.size() == 0 && value.urls.size() == 0) null else value.toString())
+                            value.proxyHostnames.size() == 0 && value.urls.size() == 0) "" else value.toString())
         fun save(id: String, acl: Acl) = getFile(id).writeText(acl.toString())
 
         suspend fun <T> parse(reader: Reader, bypassHostnames: (String) -> T, proxyHostnames: (String) -> T,

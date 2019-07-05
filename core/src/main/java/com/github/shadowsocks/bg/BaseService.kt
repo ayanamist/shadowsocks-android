@@ -349,7 +349,7 @@ object BaseService {
                     val hosts = HostsFile(DataStore.publicStore.getString(Key.hosts) ?: "")
                     proxy.init(this@Interface, hosts)
                     data.udpFallback?.init(this@Interface, hosts)
-                    if (profile.route == Acl.CUSTOM_RULES) try {
+                    try {
                         withContext(Dispatchers.IO) {
                             Acl.customRules.flatten(10, this@Interface::openConnection).also {
                                 Acl.save(Acl.CUSTOM_RULES, it)
