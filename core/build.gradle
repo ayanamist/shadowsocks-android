@@ -15,12 +15,6 @@ android {
         consumerProguardFiles 'proguard-rules.pro'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        externalNativeBuild {
-            ndkBuild {
-                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-                arguments "-j${Runtime.runtime.availableProcessors()}"
-            }
-        }
         javaCompileOptions.annotationProcessorOptions.arguments = [
                 "room.incremental": "true",
                 "room.schemaLocation": "$projectDir/schemas".toString(),
@@ -35,14 +29,9 @@ android {
 
     kotlinOptions.jvmTarget = javaVersion
 
-    externalNativeBuild {
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
-        }
-    }
-
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+        main.jni.srcDirs = []
     }
 }
 
